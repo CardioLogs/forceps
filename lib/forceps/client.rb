@@ -26,7 +26,8 @@ module Forceps
     end
 
     def filtered_model_classes
-      ActiveRecord::Base.descendants - model_classes_to_exclude
+      classes = ActiveRecord::Base.descendants - model_classes_to_exclude
+      classes.sort_by { |c| c.name.size }
     end
 
     def model_classes_to_exclude
