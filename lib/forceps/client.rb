@@ -26,8 +26,9 @@ module Forceps
     end
 
     def filtered_model_classes
-      classes = ActiveRecord::Base.descendants - model_classes_to_exclude
-      classes.sort_by { |c| c.name.size }
+      (ActiveRecord::Base.descendants - model_classes_to_exclude).reject do |klass|
+        klass.name.start_with?('HABTM_')
+      end
     end
 
     def model_classes_to_exclude
@@ -64,7 +65,6 @@ module Forceps
     end
 
     def build_new_remote_class(local_class)
-      puts local_class
       needs_type_condition = (local_class.base_class != ActiveRecord::Base) && local_class.finder_needs_type_condition?
       Class.new(local_class) do
         self.table_name = local_class.table_name
@@ -114,7 +114,9 @@ module Forceps
     end
 
     def make_associations_reference_remote_classes_for(model_class)
-      model_class.reflect_on_all_associations.each do |association|
+      model_class.reflect_on_all_associations
+      .map { |a| model_class._reflect_on_association(a.name.to_s) }
+      .each do |association|
         next if association.class_name =~ /Forceps::Remote/ rescue next
         reference_remote_class(model_class, association)
       end
