@@ -63,6 +63,7 @@ module Forceps
     end
 
     def build_new_remote_class(local_class)
+      puts local_class
       needs_type_condition = (local_class.base_class != ActiveRecord::Base) && local_class.finder_needs_type_condition?
       Class.new(local_class) do
         self.table_name = local_class.table_name
