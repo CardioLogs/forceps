@@ -26,9 +26,7 @@ module Forceps
     end
 
     def filtered_model_classes
-      (ActiveRecord::Base.descendants - model_classes_to_exclude).reject do |klass|
-        klass.name.start_with?('HABTM_')
-      end
+      ActiveRecord::Base.descendants - model_classes_to_exclude
     end
 
     def model_classes_to_exclude
