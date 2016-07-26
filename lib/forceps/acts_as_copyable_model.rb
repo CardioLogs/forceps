@@ -160,7 +160,7 @@ module Forceps
       end
 
       def simple_attributes_to_copy(remote_object)
-        remote_object.attributes.except('id').reject do |attribute_name|
+        remote_object.attributes.reject do |attribute_name|
           attributes_to_exclude(remote_object).include? attribute_name.to_sym
         end
       end
