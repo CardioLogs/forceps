@@ -108,6 +108,7 @@ module Forceps
 
         cloned_object = base_class.new
         copy_attributes(cloned_object, simple_attributes_to_copy(remote_object))
+        return base_class.find(cloned_object.id) if base_class.exists?(id: cloned_object.id)
         cloned_object.save!(validate: false)
         invoke_callbacks(:after_each, cloned_object, remote_object)
         cloned_object
