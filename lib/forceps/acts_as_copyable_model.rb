@@ -52,19 +52,7 @@ module Forceps
       end
 
       def local_copy_with_simple_attributes(remote_object)
-        if should_reuse_local_copy?(remote_object)
-          find_or_clone_local_copy_with_simple_attributes(remote_object)
-        else
-          create_local_copy_with_simple_attributes(remote_object)
-        end
-      end
-
-      def should_reuse_local_copy?(remote_object)
-        finders_for_reusing_classes.include?(remote_object.class.base_class)
-      end
-
-      def finders_for_reusing_classes
-        options[:reuse] || {}
+        find_or_clone_local_copy_with_simple_attributes(remote_object)
       end
 
       def find_or_clone_local_copy_with_simple_attributes(remote_object)
@@ -87,9 +75,7 @@ module Forceps
       end
 
       def finder_for_remote_object(remote_object)
-        finder = finders_for_reusing_classes[remote_object.class.base_class]
-        finder = build_attribute_finder(remote_object, finder) if finder.is_a? Symbol
-        finder
+        build_attribute_finder(remote_object, :id)
       end
 
       def build_attribute_finder(remote_object, attribute_name)
@@ -108,7 +94,6 @@ module Forceps
 
         cloned_object = base_class.new
         copy_attributes(cloned_object, simple_attributes_to_copy(remote_object))
-        return base_class.find(cloned_object.id) if base_class.exists?(id: cloned_object.id)
         cloned_object.save!(validate: false)
         invoke_callbacks(:after_each, cloned_object, remote_object)
         cloned_object
