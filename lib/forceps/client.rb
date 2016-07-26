@@ -114,7 +114,6 @@ module Forceps
     end
 
     def make_associations_reference_remote_classes_for(model_class)
-      #.map { |a| model_class._reflect_on_association(a.name.to_s) }
       model_class.reflect_on_all_associations
       .each do |association|
         next if association.class_name =~ /Forceps::Remote/ rescue next
@@ -151,15 +150,10 @@ module Forceps
     def reference_remote_class_in_normal_association(association, remote_model_class)
       related_remote_class = remote_class_for(association.klass.name)
 
-      puts association.klass.name
-      puts association.class.name
       cloned_association = association.dup
       cloned_association.instance_variable_set("@klass", related_remote_class)
-      puts cloned_association.klass.name
 
       ActiveRecord::Reflection.add_reflection(remote_model_class, cloned_association.name, cloned_association)
-      puts remote_model_class._reflect_on_association(cloned_association.name).class.name
-      puts ''
     end
   end
 end
