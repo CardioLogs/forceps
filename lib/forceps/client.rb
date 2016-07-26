@@ -115,7 +115,7 @@ module Forceps
 
     def make_associations_reference_remote_classes_for(model_class)
       model_class.reflect_on_all_associations
-      .map { |a| model_class._reflect_on_association(a.name.to_s) }
+      #.map { |a| model_class._reflect_on_association(a.name.to_s) }
       .each do |association|
         next if association.class_name =~ /Forceps::Remote/ rescue next
         reference_remote_class(model_class, association)
