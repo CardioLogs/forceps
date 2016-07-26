@@ -151,10 +151,14 @@ module Forceps
     def reference_remote_class_in_normal_association(association, remote_model_class)
       related_remote_class = remote_class_for(association.klass.name)
 
+      puts association.klass.name
       cloned_association = association.dup
       cloned_association.instance_variable_set("@klass", related_remote_class)
+      puts cloned_association.klass.name
 
       ActiveRecord::Reflection.add_reflection(remote_model_class, cloned_association.name, cloned_association)
+      puts remote_model_class._reflect_on_association(cloned_association.name).class.name
+      puts ''
     end
   end
 end
