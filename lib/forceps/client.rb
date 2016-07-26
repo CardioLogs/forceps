@@ -152,6 +152,7 @@ module Forceps
       related_remote_class = remote_class_for(association.klass.name)
 
       puts association.klass.name
+      puts association.class.name
       cloned_association = association.dup
       cloned_association.instance_variable_set("@klass", related_remote_class)
       puts cloned_association.klass.name
