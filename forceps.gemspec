@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   if ENV['RAILS_VERSION']
     s.add_dependency "rails", "= #{ENV['RAILS_VERSION']}"
   else
-    s.add_dependency "rails", "~> 5"
+    s.add_dependency "rails", "~> 6"
   end
 
   s.add_dependency "logging", "~> 2.0.0"
